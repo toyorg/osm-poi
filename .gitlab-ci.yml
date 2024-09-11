@@ -35,7 +35,7 @@ release:
       when: never 
       allow_failure: false
     - if: $CI_PIPELINE_SOURCE == "schedule"
-      when: always
+      when: on_success
       allow_failure: false
   script:
     - echo 'Creating release'
