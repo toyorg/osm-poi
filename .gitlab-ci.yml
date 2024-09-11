@@ -1,0 +1,49 @@
+stages:
+  - build
+  - release
+
+build:
+  stage: build
+  image: python
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never 
+      allow_failure: false
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: always
+      allow_failure: false
+  before_script:
+    - echo "BUILD_JOB_ID=$CI_JOB_ID" >> job.env
+  script:
+    - pip install -r requirements.txt
+    - python -u getdata.py
+  artifacts:
+    paths:
+      - output/OSM_POI_Europe.zip
+    reports:
+      dotenv: job.env
+    expire_in: never
+
+release:
+  stage: release
+  image: registry.gitlab.com/gitlab-org/release-cli:latest
+  needs:
+    - job: build
+      artifacts: true
+  rules:
+    - if: $CI_COMMIT_TAG
+      when: never 
+      allow_failure: false
+    - if: $CI_PIPELINE_SOURCE == "schedule"
+      when: always
+      allow_failure: false
+  script:
+    - echo 'Creating release'
+  release:
+    name: 'Updated on $(date +%Y-%m-%d)'
+    description: 'Automated update of OSM POI Europe on $(date +%Y-%m-%d)'
+    tag_name: '$(date +%Y-%m-%d)'
+    assets:
+      links:
+        - name: 'OSM_POI_Europe.zip'
+          url: '$CI_SERVER_URL/$CI_PROJECT_PATH/-/jobs/$BUILD_JOB_ID/artifacts/raw/output/OSM_POI_Europe.zip'
