@@ -11,10 +11,10 @@ jobs:
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
 
     steps:
-      - uses: actions/checkout@v3
+      - uses: actions/checkout@v4
 
       - name: Set up Python 3.12
-        uses: actions/setup-python@v4
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
 
@@ -26,40 +26,21 @@ jobs:
         run: python -u getdata.py
 
       - name: Upload artifact
-        uses: actions/upload-artifact@v3
+        uses: actions/upload-artifact@v4
         with:
           name: OSM_POI_Europe
           path: output/OSM_POI_Europe.zip
           retention-days: 0 # Keep forever
+          overwrite: true
 
-      - name: Set build info
-        id: build_info
-        run: echo "job_id=${{ github.run_id }}" >> $GITHUB_OUTPUT
-
-    outputs:
-      job_id: ${{ steps.build_info.outputs.job_id }}
-
-  release:
-    needs: build
-    runs-on: ubuntu-latest
-    if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-
-    steps:
       - name: Get current date
         id: date
         run: echo "date=$(date +'%Y-%m-%d')" >> $GITHUB_OUTPUT
 
-      - name: Download artifact
-        uses: actions/download-artifact@v3
-        with:
-          name: OSM_POI_Europe
-          path: output
-
       - name: Create Release
-        uses: softprops/action-gh-release@v1
+        uses: softprops/action-gh-release@v2
         with:
           name: Updated on ${{ steps.date.outputs.date }}
-          tag_name: ${{ steps.date.outputs.date }}
           body: Automated update of OSM POI Europe on ${{ steps.date.outputs.date }}
           files: output/OSM_POI_Europe.zip
           generate_release_notes: false
