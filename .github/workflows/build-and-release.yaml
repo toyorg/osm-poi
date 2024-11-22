@@ -6,7 +6,7 @@ on:
   workflow_dispatch: # Allows manual triggering
 
 jobs:
-  build:
+  build-and-release:
     runs-on: ubuntu-latest
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
 
@@ -42,6 +42,7 @@ jobs:
         with:
           name: Updated on ${{ steps.date.outputs.date }}
           body: Automated update of OSM POI Europe on ${{ steps.date.outputs.date }}
+          tag_name: v${{ steps.date.outputs.date }}
           files: output/OSM_POI_Europe.zip
           generate_release_notes: false
         env:
