@@ -2,7 +2,7 @@ name: Build and Release
 
 on:
   schedule:
-    - cron: "0 0 * * 1" # Runs daily at midnight UTC
+    - cron: "0 0 * * 1" # Runs on mondays at midnight UTC
   workflow_dispatch: # Allows manual triggering
 
 jobs:
