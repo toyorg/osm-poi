@@ -184,11 +184,11 @@ class MIB2HIGH(object):
         poicoord = pandas.DataFrame()
         # poicoord.insert(0,'poiid',range(startpoiid,startpoiid+len(poicoord)))
         poicoord['poiid'] = range(startpoiid, startpoiid + len(df))
-        poicoord['lonmin'] = df['long']
-        poicoord['lonmax'] = df['long']
+        poicoord['lonmin'] = df['lon']
+        poicoord['lonmax'] = df['lon']
         poicoord['latmin'] = df['lat']
         poicoord['latmax'] = df['lat']
-        # poicoord=poicoord.drop(columns=['name','lat','long'])
+        # poicoord=poicoord.drop(columns=['name','lat','lon'])
         poicoord.to_sql(name='poicoord', con=self.conn, if_exists='append', index=False)
 
         # Build the poiname table

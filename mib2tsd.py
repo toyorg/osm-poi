@@ -20,7 +20,7 @@ MIB2TSD sqlite database format:
     CREATE TABLE pPoiSystemTable( pPoiId INTEGER UNIQUE PRIMARY KEY,catId INTEGER NOT NULL,priority INTEGER,sortIndex INTEGER ,personalComment TEXT ,str1 TEXT ,str2 TEXT ,int1 INTEGER ,int2 INTEGER ,version TEXT,isDirty INTEGER , FOREIGN KEY(catId) REFERENCES pPoiCategoryTable(catId) ON UPDATE CASCADE);
     CREATE VIRTUAL TABLE pPoiFtsTable USING fts4 ( pPoiId INTEGER NOT NULL,name TEXT NOT NULL);
 
-    Morton Codes 
+    Morton Codes
 # Bradley Stoke 03 6734162532828480880 51.5309982299805|-2.53273010253906
 
 '''
@@ -103,7 +103,7 @@ class MIB2TSD(object):
         if (len(df) == 0):
             return
 
-        df['mortonCode']=df.apply(lambda x: encode_morton_code(x['lat'],x['long']),axis=1)
+        df['mortonCode']=df.apply(lambda x: encode_morton_code(x['lat'],x['lon']),axis=1)
 
         # Build the poiaddr table
         poiaddr=pandas.DataFrame()

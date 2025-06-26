@@ -114,7 +114,7 @@ def read_geo_csv(source):
     # does not have a header, we assume the fields are long,lat,name
     if len(df.columns)!=3:
       raise Exception("Expected 3 columns in headerless csv file %s, got %d" % (source,len(df.columns)))
-    return pandas.read_csv(source,header=None,names=[ 'long', 'lat', 'name' ],**csv_opts)
+    return pandas.read_csv(source,header=None,names=[ 'lon', 'lat', 'name' ],**csv_opts)
   else:
     # has a header
     df = pandas.read_csv(source,**csv_opts)
@@ -129,16 +129,14 @@ def read_geo_csv(source):
     have_name = False
 
     for col in df.columns:
-      if col=='long':
+      if col=='longitude':
+        df.rename(columns={'longitude':'lon'}, inplace=True)
         have_longitude=True
-      elif col=='longitude':
-        df.rename(columns={'longitude':'long'}, inplace=True)
-        have_longitude=True
-      elif col=='lon':
-        df.rename(columns={'lon':'long'}, inplace=True)
+      elif col=='long':
+        df.rename(columns={'long':'lon'}, inplace=True)
         have_longitude=True
       elif col=='lng':
-        df.rename(columns={'lng':'long'}, inplace=True)
+        df.rename(columns={'lng':'lon'}, inplace=True)
         have_longitude=True
       elif col=='lat':
         have_latitude=True
@@ -223,25 +221,5 @@ def read_geo_gpx(source):
 
   df = pandas.DataFrame(waypoints)
   df[['lat','lon']] = df[['lat','lon']].apply(pandas.to_numeric)
-
-  have_longitude = False
-  have_latitude = False
-  have_name = False
-
-  for col in df.columns:
-    if col=='lon':
-      df.rename(columns={'lon':'long'}, inplace=True)
-      have_longitude=True
-    elif col=='lat':
-      have_latitude=True
-    elif col=='name':
-      have_name=True
-    elif col=='comment':
-      pass
-    else:
-      print("Warning: ignoring unknown column: %s" % col)
-
-  if not have_longitude or not have_latitude or not have_name:
-    raise Exception("Failed to find longitude, latitude and name columns")
 
   return df
