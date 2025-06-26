@@ -1,4 +1,4 @@
-name: Build and Release
+name: Build, Release, and Cleanup Workflow
 
 on:
   schedule:
@@ -13,7 +13,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: Set up Python 3.12
+      - name: Set up Python
         uses: actions/setup-python@v5
         with:
           python-version: "3.13"
@@ -46,7 +46,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - uses: dev-drprasad/delete-older-releases@v0.3.4
+      - name: Delete older releases
+        uses: dev-drprasad/delete-older-releases@v0.3.4
         with:
           keep_latest: 2
         env:
