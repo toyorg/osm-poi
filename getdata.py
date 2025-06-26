@@ -212,8 +212,9 @@ def generate_gpx(array, points_series, name):
         os.remove(f'gpx/{name}.gpx')
     poi = gpd.GeoDataFrame(array, geometry=points_series, crs='epsg:4326').drop_duplicates()
     poi = gpd.sjoin(poi, europe_polygon, predicate='within').dropna(axis=1).drop('index_right', axis=1)
-    poi.to_file(f"gpx/{name}.gpx", "GPX")
+    poi.to_file(f"gpx/{name}.gpx", "GPX", engine="fiona")
     return
+
 
 def average_speed(_progress, _task_id):
     data = []
