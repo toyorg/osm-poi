@@ -199,8 +199,9 @@ countries = {
 countries_count = len(countries)
 
 
-@retry(wait_random_min=500, wait_random_max=1500)
+@retry(wait_random_min=500, wait_random_max=1500, stop_max_attempt_number=5)
 def get_data(url):
+    print(url)
     response = requests.get(url)
     if response.status_code == 200:
         return response.json()['elements']
