@@ -1,5 +1,5 @@
 rich==14.0.0
-geopandas==1.1.0
+geopandas==1.1.1
 shapely==2.1.1
 retrying==1.4.0
 requests==2.32.4
