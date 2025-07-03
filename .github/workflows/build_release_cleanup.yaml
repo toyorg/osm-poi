@@ -15,7 +15,8 @@ jobs:
         uses: dev-drprasad/delete-older-releases@v0.3.4
         with:
           keep_latest: 2
-          
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Checkout repository
         uses: actions/checkout@v4
 
@@ -49,7 +50,5 @@ jobs:
           tag_name: v${{ steps.date.outputs.date }}
           files: output/OSM_POI_Europe.zip
           generate_release_notes: false
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
