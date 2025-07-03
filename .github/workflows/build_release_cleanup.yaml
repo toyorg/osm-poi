@@ -17,6 +17,7 @@ jobs:
           keep_latest: 2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  
       - name: Checkout repository
         uses: actions/checkout@v4
 
