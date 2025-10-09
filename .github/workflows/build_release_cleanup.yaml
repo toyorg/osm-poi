@@ -17,9 +17,12 @@ jobs:
           keep_latest: 2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  
+
       - name: Checkout repository
         uses: actions/checkout@v5
+
+      - name: Install dependencies
+        run: sudo apt-get install gdal-bin libgdal-dev -y
 
       - name: Set up Python
         uses: actions/setup-python@v6
