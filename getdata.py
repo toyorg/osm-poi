@@ -199,7 +199,7 @@ countries = {
 countries_count = len(countries)
 
 
-@retry(wait_random_min=500, wait_random_max=1500, stop_max_attempt_number=5)
+@retry(wait_random_min=30000, wait_random_max=60000, stop_max_attempt_number=10)
 def get_data(url):
     print(url)
     response = requests.get(url)
