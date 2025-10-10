@@ -7,7 +7,7 @@ on:
 
 jobs:
   build-release-and-cleanup:
-    runs-on: ubuntu-latest
+    runs-on: self-hosted
     if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
 
     steps:
