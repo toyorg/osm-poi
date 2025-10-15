@@ -182,7 +182,7 @@ countries = {
     'Poland': 49715,
     'Portugal': 295480,
     'Romania': 90689,
-    # 'Russia': 60189,
+    'Russia': 60189,
     'San Marino': 54624,
     'Serbia': 1741311,
     'Slovakia': 14296,
@@ -198,6 +198,7 @@ countries = {
 
 countries_count = len(countries)
 
+overpass_host = 'http://192.168.0.170:12347'
 
 @retry(wait_random_min=30000, wait_random_max=60000, stop_max_attempt_number=10)
 def get_data(url):
@@ -220,7 +221,7 @@ def generate_gpx(array, points_series, name):
 def average_speed(_progress, _task_id):
     data = []
     for i, (_, relationid) in enumerate(countries.items(), start=1):
-        data += get_data(f'https://overpass-api.de/api/interpreter?data=[out:json][timeout:300];area(id:{3600000000+relationid})->.searchArea;nwr["enforcement"="average_speed"](area.searchArea);out geom;')
+        data += get_data(f'{overpass_host}/api/interpreter?data=[out:json][timeout:300];area(id:{3600000000+relationid})->.searchArea;nwr["enforcement"="average_speed"](area.searchArea);out geom;')
         _progress[_task_id] = {"progress": i + 1, "total": countries_count+1}
 
     tmp = [i for j in data for i in j.get('members', {}) if j.get('members') and i.get('role') in ['from', 'to'] and i.get('type') != 'way']
@@ -238,7 +239,7 @@ def average_speed(_progress, _task_id):
 def fuel_stations(_progress, _task_id):
     data = []
     for i, (_, relationid) in enumerate(countries.items(), start=1):
-        data += get_data(f'https://overpass-api.de/api/interpreter?data=[out:json][timeout:300];area(id:{3600000000+relationid})->.searchArea;nwr["amenity"="fuel"](area.searchArea);convert item ::=::,::geom=geom(),_osm_type=type();out center;')
+        data += get_data(f'{overpass_host}/api/interpreter?data=[out:json][timeout:300];area(id:{3600000000+relationid})->.searchArea;nwr["amenity"="fuel"](area.searchArea);convert item ::=::,::geom=geom(),_osm_type=type();out center;')
         _progress[_task_id] = {"progress": i + 1, "total": countries_count+1}
 
     if data:
@@ -253,7 +254,7 @@ def fuel_stations(_progress, _task_id):
 def speed_bumps(_progress, _task_id):
     data = []
     for i, (_, relationid) in enumerate(countries.items(), start=1):
-        data += get_data(f'https://overpass-api.de/api/interpreter?data=[out:json][timeout:300];area(id:{3600000000+relationid})->.searchArea;nwr["traffic_calming"](area.searchArea);out center;')
+        data += get_data(f'{overpass_host}/api/interpreter?data=[out:json][timeout:300];area(id:{3600000000+relationid})->.searchArea;nwr["traffic_calming"](area.searchArea);out center;')
         _progress[_task_id] = {"progress": i + 1, "total": countries_count+1}
 
     if data:
@@ -268,7 +269,7 @@ def speed_bumps(_progress, _task_id):
 def rail_crossings(_progress, _task_id):
     data = []
     for i, (_, relationid) in enumerate(countries.items(), start=1):
-        data += get_data(f'https://overpass-api.de/api/interpreter?data=[out:json][timeout:300];area(id:{3600000000+relationid})->.searchArea;nwr["railway"="level_crossing"](area.searchArea);out center;')
+        data += get_data(f'{overpass_host}/api/interpreter?data=[out:json][timeout:300];area(id:{3600000000+relationid})->.searchArea;nwr["railway"="level_crossing"](area.searchArea);out center;')
         _progress[_task_id] = {"progress": i + 1, "total": countries_count+1}
 
     if data:
@@ -283,7 +284,7 @@ def rail_crossings(_progress, _task_id):
 def speed_cameras(_progress, _task_id):
     data = []
     for i, (_, relationid) in enumerate(countries.items(), start=1):
-        data += get_data(f'https://overpass-api.de/api/interpreter?data=[out:json][timeout:300];area(id:{3600000000+relationid})->.searchArea;nwr["highway"="speed_camera"](area.searchArea);out center;')
+        data += get_data(f'{overpass_host}/api/interpreter?data=[out:json][timeout:300];area(id:{3600000000+relationid})->.searchArea;nwr["highway"="speed_camera"](area.searchArea);out center;')
         _progress[_task_id] = {"progress": i + 1, "total": countries_count+1}
 
     if data:
@@ -298,7 +299,7 @@ def speed_cameras(_progress, _task_id):
 def fast_food(_progress, _task_id):
     data = []
     for i, (_, relationid) in enumerate(countries.items(), start=1):
-        data += get_data(f'https://overpass-api.de/api/interpreter?data=[out:json][timeout:300];area(id:{3600000000+relationid})->.searchArea;nwr["amenity"="fast_food"](area.searchArea);convert item ::=::,::geom=geom(),_osm_type=type();out center;')
+        data += get_data(f'{overpass_host}/api/interpreter?data=[out:json][timeout:300];area(id:{3600000000+relationid})->.searchArea;nwr["amenity"="fast_food"](area.searchArea);convert item ::=::,::geom=geom(),_osm_type=type();out center;')
         _progress[_task_id] = {"progress": i + 1, "total": countries_count+1}
 
     if data:
