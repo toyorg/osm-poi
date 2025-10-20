@@ -18,4 +18,4 @@ Should work on other versions
 ### Credits
 
   - Based on https://github.com/jimmyH/mypois/
-  - Getting data using https://github.com/wiktorn/Overpass-API
+  - Data from https://overpass-turbo.eu/
