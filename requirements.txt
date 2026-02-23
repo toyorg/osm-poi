@@ -1,4 +1,4 @@
-rich==14.3.2
+rich==14.3.3
 geopandas==1.1.2
 shapely==2.1.2
 retrying==1.4.2
